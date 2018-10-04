@@ -7,20 +7,20 @@ public class Node {
 	int cost;
 	
 	// root constructor
-	public Node(){
+	public Node(State state){
 		this.parent = null;
 		this.previousOperator = null;
 		this.depth = 0;
 		this.cost = 0;
-		
-		//state initialization
+		this.state = state;
 	}
 	
 	// node constructor
-	public Node(Node parent, JonSnowOperation previousOperator){
+	public Node(Node parent, JonSnowOperation previousOperator, State state, int cost){
 		this.parent = parent;
 		this.depth = parent.depth + 1;
-		this.cost = parent.cost;
 		this.previousOperator = previousOperator;
+		this.state = state;
+		this.cost = cost;
 	}
 }
