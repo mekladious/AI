@@ -44,12 +44,12 @@ public class SaveWestros extends SearchProblem{
 		}
 	}
 
-	@Override
+	/*@Override
 	public Node SearchProcedure(Object[][] grid, Strategy strategy,
 			Boolean visualize) {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
 	public static void main(String[] args)
 	{
@@ -63,6 +63,12 @@ public class SaveWestros extends SearchProblem{
 			}
 			System.out.println();
 		}
+	}
+
+	@Override
+	public boolean isGoal(State state) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
