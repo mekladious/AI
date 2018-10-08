@@ -2,7 +2,7 @@
 public class Node {
 	Node parent;
 	State state;
-	JonSnowOperation previousOperator;
+	Operation previousOperator;
 	int depth;
 	int cost;
 	
