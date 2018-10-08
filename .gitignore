@@ -1,9 +1,12 @@
 .metadata
 .recommenders
+.vscode
+.DS_Store
 Project1/.metadata
 Project1/.settings
 Project1/bin
 Project1/.classpath
 Project1/.project
 Project1/.idea
+*.class
 .gitignore
