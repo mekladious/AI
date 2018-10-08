@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class SaveWestros extends SearchProblem{
 
-	int m, n, dragonGlass, whiteWalkers;
+	int m, n, dragonGlass, maxWhiteWalkers;
 	CellContent [][] grid;
 
 	public SaveWestros(){
@@ -16,7 +16,7 @@ public class SaveWestros extends SearchProblem{
         m = (int)(Math.random()*20) + 1;
         n = (int)(Math.random()*20) + 1;
 
-        whiteWalkers = (int)(Math.random() * (m*n)) + 1;
+        maxWhiteWalkers = (int)(Math.random() * (m*n)) + 1;
         dragonGlass = (int)(Math.random() * (m*n)) + 1;
 
 		grid = new CellContent[m][n];
@@ -26,7 +26,7 @@ public class SaveWestros extends SearchProblem{
 		}
 
 		grid [m-1][n-1] = CellContent.JON;
-		for (int ww = 0; ww < whiteWalkers; ww++)
+		for (int ww = 0; ww < maxWhiteWalkers; ww++)
 		{
 			int x = (int)(Math.random()*m);
 			int y = (int)(Math.random()*n);
@@ -50,7 +50,7 @@ public class SaveWestros extends SearchProblem{
 	@Override
 	public boolean isGoal(State state) {
 		// TODO Auto-generated method stub
-		return false;
+		return (((JonSnowState)state).whiteWalkers<=0)?true:false;
 	}
 	
 	public static void main(String[] args)

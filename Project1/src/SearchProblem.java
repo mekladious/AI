@@ -5,6 +5,7 @@ public abstract class SearchProblem {
 	State initialState;
 	Operation[] operations;
 	int pathCost;
+	LinkedList<Node> queue;
 	
 	public SearchProblem(){
 		
@@ -20,58 +21,74 @@ public abstract class SearchProblem {
 	
 	public abstract boolean isGoal(State state);
 	
-	public Node searchProcedure(Strategy stratetgy){
+	public Node searchProcedure(SearchProblem sp, Strategy stratetgy){
 		//create list to represent the queue
-		LinkedList<Node> queue = new LinkedList<Node>();
+		queue = new LinkedList<Node>();
 		
 		//enqueue the initial state as a node(create Node(initial state)
 		queue.add(new Node(initialState));
 		
+		//get enqueuing function based on strategy
+		EnqueueFunction enqueueFn;
+		if(stratetgy == Strategy.BFS)
+			enqueueFn = (n) -> bfs(n);
+		else if(stratetgy == Strategy.DFS)
+			enqueueFn = (n) -> dfs(n);
+		else if(stratetgy == Strategy.UCS)
+			enqueueFn = (n) -> ucs(n);
+		else if(stratetgy == Strategy.IDS)
+			enqueueFn = (n) -> ids(n);
+		else if(stratetgy == Strategy.GREEDY)
+			enqueueFn = (n) -> greedy(n);
+		else if(stratetgy == Strategy.ASTAR)	
+			enqueueFn = (n) -> aStar(n);
+		else return null;
+
 		//loop on the queue while it is not empty popping the first element (currentNode) and assigning its cost to current cost
 		while(!queue.isEmpty()){
 			Node currentNode = queue.getFirst();
-			pathCost = currentNode.cost; 
+			pathCost += currentNode.cost; 
 			
 			//if currentNode is goal then return currentNode
 			if(isGoal(currentNode.state))
 				return currentNode;
 			
+			//expand and get list of children nodes
+			//enqueue the nodes (loop)
+			enqueueFn.enqueue(currentNode);
+
 			//queue = expansion function from that current Node enqueing the children according to the search strategy
 			// inside: if search strategy one of the 6, go do different private enqueing searching methods
-				switch(stratetgy){
-					case BFS:;
-					case DFS:;
-					case UCS:;
-					case IDS:;
-					case GREEDY:;
-					case ASTAR:;
-				}
+				// switch(stratetgy){
+				// 	case BFS:;
+				// 	case DFS:;
+				// 	case UCS:;
+				// 	case IDS:;
+				// 	case GREEDY:;
+				// 	case ASTAR:;
+				// }
 		}
 		return null;
 	}
 	
-	private LinkedList<Node> bfs(){
-		return null;
+	private void bfs(Node n){
+		queue.addLast(n);
 	}
 	
-	private LinkedList<Node> dfs(){
-		return null;
+	private void dfs(Node n){
+		queue.addFirst(n);
 	}
 	
-	private LinkedList<Node> ids(){
-		return null;
+	private void ids(Node n){
 	}
 	
-	private LinkedList<Node> ucs(){
-		return null;
+	private void ucs(Node n){
 	}
 	
-	private LinkedList<Node> greedy(){
-		return null;
+	private void greedy(Node n){
 	}
 	
-	private LinkedList<Node> aStar(){
-		return null;
+	private void aStar(Node n){
 	}
 
 }
