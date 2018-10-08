@@ -3,19 +3,18 @@
 ###### • A brief description of your understanding of the problem.
 
 ###### • A discussion of your implementation of the search-tree node ADT.
-Attributes:
-The state of the state space that this node corresponds to.
-The parent node.
-The operator applied to generate this node.
-The depth of the node in the tree.
-The path cost from the root.
+The _state_ of the state space that this node corresponds to.  
+The _parent_ node.  
+The _operator_ applied to generate this node.  
+The _depth_ of the node in the tree.  
+The _path cost_ from the root.  
 
 ###### • A discussion of your implementation of the search problem ADT.
-A _**list** of operators_, or actions, available to the agent.
-An _initial state_ **of the generic type State**.
-A _state space_ which are the set of states reachable from the initial state by any sequence of actions.
-A _goal test_ **abstract function**, which the agent applies to a state to determine if it is a goal state.
-A path cost function: a function that assigns cost to a sequence of actions. Typically, it is the sum of the costs of individual actions in the sequence.
+A _**list** of operators_, or actions, available to the agent.  
+An _initial state_ **of the generic type State**.  
+A _state space_ which are the set of states reachable from the initial state by any sequence of actions.  
+A _goal test_ **abstract function**, which the agent applies to a state to determine if it is a goal state.  
+A path cost function: a function that assigns cost to a sequence of actions. Typically, it is the sum of the costs of individual actions in the sequence.  
 
 ###### • A discussion of your implementation of the SaveWesteros problem.
 
