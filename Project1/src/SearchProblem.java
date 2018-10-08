@@ -1,6 +1,6 @@
 
 public abstract class SearchProblem {
 	
-	public abstract Node SearchProcedure(Object [][] grid, 
+	public abstract Node SearchProcedure(CellContent [][] grid, 
 			Strategy strategy, Boolean visualize);
 }
