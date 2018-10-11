@@ -47,10 +47,20 @@ public class SaveWestros extends SearchProblem{
 		}
 	}
 
+	//TODO : MIRA
+	//pos: update jon snoww pos, check for obs
+	// kill : kills all surrounding check ds#
+	// ww cell: return null
+	// ds: update auto
+	//apply all operations
+	public Node[] expand(Node node){
+		return null;
+	}
+
 	@Override
 	public boolean isGoal(State state) {
 		// TODO Auto-generated method stub
-		return (((JonSnowState)state).whiteWalkers<=0)?true:false;
+		return (((JonSnowState)state).whiteWalkers<=0);
 	}
 	
 	public static void main(String[] args)

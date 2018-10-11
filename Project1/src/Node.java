@@ -1,8 +1,8 @@
 
-public class Node {
+public class Node{
 	Node parent;
 	State state;
-	JonSnowOperation previousOperator;
+	Operation previousOperator;
 	int depth;
 	int cost;
 	
@@ -16,7 +16,7 @@ public class Node {
 	}
 	
 	// node constructor
-	public Node(Node parent, JonSnowOperation previousOperator, State state, int cost){
+	public Node(Node parent, Operation previousOperator, State state, int cost){
 		this.parent = parent;
 		this.depth = parent.depth + 1;
 		this.previousOperator = previousOperator;
