@@ -1,4 +1,4 @@
 
 public enum JonSnowOperation implements Operation {
-	LEFT, RIGHT, UP, DOWN, PICKUP_DG, KILL_WW;
+	LEFT, RIGHT, UP, DOWN, KILL_WW;
 }
