@@ -6,6 +6,7 @@ public abstract class SearchProblem {
 	Operation[] operations;
 	int pathCost;
 	LinkedList<Node> queue;
+	int idsDepth = 0;
 	
 	public SearchProblem(){
 		
@@ -23,7 +24,7 @@ public abstract class SearchProblem {
 
 	public abstract Node [] expand(Node node);
 	
-	public Node searchProcedure(SearchProblem sp, Strategy stratetgy){
+	public Node searchProcedure(SearchProblem sp, Strategy strategy){
 		//create list to represent the queue
 		queue = new LinkedList<Node>();
 		
@@ -32,17 +33,17 @@ public abstract class SearchProblem {
 		
 		//get enqueuing function based on strategy
 		EnqueueFunction enqueueFn;
-		if(stratetgy == Strategy.BFS)
+		if(strategy == Strategy.BFS)
 			enqueueFn = (n) -> bfs(n);
-		else if(stratetgy == Strategy.DFS)
+		else if(strategy == Strategy.DFS)
 			enqueueFn = (n) -> dfs(n);
-		else if(stratetgy == Strategy.UCS)
+		else if(strategy == Strategy.UCS)
 			enqueueFn = (n) -> ucs(n);
-		else if(stratetgy == Strategy.IDS)
+		else if(strategy == Strategy.IDS)
 			enqueueFn = (n) -> ids(n);
-		else if(stratetgy == Strategy.GREEDY)
+		else if(strategy == Strategy.GREEDY)
 			enqueueFn = (n) -> greedy(n);
-		else if(stratetgy == Strategy.ASTAR)	
+		else if(strategy == Strategy.ASTAR)	
 			enqueueFn = (n) -> aStar(n);
 		else return null;
 
@@ -56,13 +57,17 @@ public abstract class SearchProblem {
 				return currentNode;
 			
 			//expand and get list of children nodes
-			Nodes [] children = expand(currentNode);
-
-			for(int i = 0; i<children.length(); i++)
+			if((strategy == Strategy.IDS && currentNode.depth < idsDepth) || strategy != Strategy.IDS)
 			{
-				//enqueue the nodes (loop)
-				enqueueFn.enqueue(currentNode);
-			}
+				Node [] children = expand(currentNode);
+
+				for(int i = 0; i<children.length; i++)
+				{
+					//enqueue the nodes (loop)
+					enqueueFn.enqueue(currentNode);
+				}
+
+			}	
 			//queue = expansion function from that current Node enqueing the children according to the search strategy
 			// inside: if search strategy one of the 6, go do different private enqueing searching methods
 				// switch(stratetgy){
@@ -85,8 +90,17 @@ public abstract class SearchProblem {
 		queue.addFirst(n);
 	}
 	
-	private void ids(Node n){
-		//dfs
+	private void ids(Node n)
+	{	
+		if(n.depth <= idsDepth)
+		{
+			dfs(n);
+		}
+		else if (n.depth > idsDepth && queue.isEmpty())
+		{
+			idsDepth++;
+			ids(new Node(initialState));
+		}
 	}
 	
 	private void ucs(Node n){
