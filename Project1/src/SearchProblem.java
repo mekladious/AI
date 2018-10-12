@@ -49,7 +49,7 @@ public abstract class SearchProblem {
 
 		//loop on the queue while it is not empty popping the first element (currentNode) and assigning its cost to current cost
 		while(!queue.isEmpty()){
-			Node currentNode = queue.getFirst();
+			Node currentNode = queue.removeFirst();
 			pathCost = currentNode.cost; 
 			
 			//if currentNode is goal then return currentNode
@@ -70,7 +70,7 @@ public abstract class SearchProblem {
 			}	
 			//queue = expansion function from that current Node enqueing the children according to the search strategy
 			// inside: if search strategy one of the 6, go do different private enqueing searching methods
-				// switch(stratetgy){
+				// switch(strategy){
 				// 	case BFS:;
 				// 	case DFS:;
 				// 	case UCS:;
