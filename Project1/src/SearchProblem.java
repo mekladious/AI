@@ -1,7 +1,7 @@
 import java.util.LinkedList;
 public abstract class SearchProblem {
 
-	Object[] stateSpace;
+	State[] stateSpace;
 	State initialState;
 	Operation[] operations;
 	int pathCost;
@@ -12,7 +12,7 @@ public abstract class SearchProblem {
 	}
 	
 	//add Operation[] operations,
-	public SearchProblem(Object[] stateSpace, State initialState, Operation[] operations){
+	public SearchProblem(State[] stateSpace, State initialState, Operation[] operations){
 		this.stateSpace = stateSpace;
 		this.initialState = initialState;
 		this.operations = operations;
@@ -90,7 +90,18 @@ public abstract class SearchProblem {
 	}
 	
 	private void ucs(Node n){
-		//compareto function
+		Node prev = queue.get(0);
+		Node curr;
+
+		if(prev.cost<n.cost){
+			queue.addFirst(n);
+		}
+		
+		for(int i=0; i<queue.size(); i++)
+		{
+			curr = queue.get(i);
+		}
+
 	}
 	
 	private void greedy(Node n){
