@@ -24,7 +24,7 @@ public abstract class SearchProblem {
 
 	public abstract Node [] expand(Node node);
 	
-	public Node searchProcedure(SearchProblem sp, Strategy strategy){
+	public Node searchProcedure(Strategy strategy){
 		//create list to represent the queue
 		queue = new LinkedList<Node>();
 		

@@ -177,10 +177,8 @@ public class SaveWestros extends SearchProblem{
 		return (((JonSnowState)state).whiteWalkers<=0);
 	}
 	
-	public static void main(String[] args)
+	public static void printGrid(SaveWestros problem)
 	{
-		SaveWestros problem = new SaveWestros();
-		
 		for(int i = 0; i<problem.m; i++)
 		{
 			for(int j = 0; j<problem.n; j++)
@@ -189,6 +187,13 @@ public class SaveWestros extends SearchProblem{
 			}
 			System.out.println();
 		}
+	}
+	
+	public static void main(String[] args)
+	{
+		SaveWestros problem = new SaveWestros();
+		printGrid(problem);
+		problem.searchProcedure(Strategy.BFS);
 	}
 
 
