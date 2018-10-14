@@ -111,18 +111,21 @@ public abstract class SearchProblem {
 	}
 	
 	private void ucs(Node n){
-		Node prev = queue.get(0);
-		Node curr;
-
-		if(prev.cost<n.cost){
-			queue.addFirst(n);
-		}
-		
-		for(int i=0; i<queue.size(); i++)
+		if(queue.size()==0)
+			queue.add(n);
+		else
 		{
-			curr = queue.get(i);
+			Node curr;
+			for(int i=0; i<queue.size(); i++)
+			{
+				curr = queue.get(i);
+				if(curr.cost>n.cost){
+					queue.add(i,n);
+					return;
+				}
+			}
+			queue.addLast(n);
 		}
-
 	}
 	
 	private void greedy(Node n){

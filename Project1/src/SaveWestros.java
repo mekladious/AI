@@ -162,7 +162,7 @@ public class SaveWestros extends SearchProblem{
 			// System.out.println();
 			for(int j = 0; j<problem.n; j++)
 			{
-				System.out.print(problem.map[i][j]+"\t");
+				System.out.print(problem.map[i][j]+"\t\t");
 			}
 			System.out.println();
 		}
@@ -173,7 +173,7 @@ public class SaveWestros extends SearchProblem{
 		Grid grid = new Grid();
 		SaveWestros problem = new SaveWestros(grid);
 		printGrid(problem);
-		Node n = problem.searchProcedure(Strategy.BFS);
+		Node n = problem.searchProcedure(Strategy.DFS);
 		System.out.println(n);
 	}
 }
