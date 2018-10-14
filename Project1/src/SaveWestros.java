@@ -24,14 +24,17 @@ public class SaveWestros extends SearchProblem{
 		JonSnowOperation [] operations = JonSnowOperation.class.getEnumConstants();
 		Node [] children = new Node[5];
 		JonSnowState currState = (JonSnowState)node.state;
-		int newCost = node.cost;
+		int newCost=0;
+		State next;
 		
 		for(int i = 0; i<operations.length; i++){
 			JonSnowOperation currOperation = operations[i];
+			// System.out.println(operations[i]);
 			if(currOperation == JonSnowOperation.KILL_WW){
-				newCost += n*m;
+				newCost = n*m;
 			}
-			children[i] = new Node(node, currOperation, nextState(currState, currOperation), newCost+1);
+			next = nextState(currState, currOperation);
+			children[i] = (next!=null && !isVisited(next))?new Node(node, currOperation, next, newCost+node.cost+1):null;
 		}
 		return children;
 	}
@@ -40,7 +43,7 @@ public class SaveWestros extends SearchProblem{
 
 		int x = ((JonSnowState)currState).x;
 		int y = ((JonSnowState)currState).y;
-		CellContent currCell = map[x][y];
+		// CellContent currCell = map[x][y];
 		int ww = ((JonSnowState)currState).whiteWalkers;
 		int dg = ((JonSnowState)currState).dragonGlass;
 		JonSnowOperation currOperation = (JonSnowOperation)o;
@@ -77,7 +80,6 @@ public class SaveWestros extends SearchProblem{
 		}
 		
 		if(newX<0 || newX>=m || newY<0 || newY>=n){
-			map[x][y] = currCell;
 			return null;
 		} 
 		
@@ -94,13 +96,14 @@ public class SaveWestros extends SearchProblem{
 					// newCost = node.cost+1;
 					// children[i] = new Node(node, (Operation)curr_operation, newState, newCost); break;
 				case EMPTY:
+					// map[newX][newY] = CellContent.JON; 
 					return new JonSnowState(newX, newY, dg, ww);
 					//TODO: calculate cost
 					// newCost = node.cost+1;
 					// children[i] = new Node(node, (Operation)curr_operation, newState, newCost); break;
 				default: 
 			}
-			map[newX][newY] = CellContent.JON;
+			// map[newX][newY] = CellContent.JON;
 		}
 
 		return null;
@@ -137,6 +140,22 @@ public class SaveWestros extends SearchProblem{
 		else
 			return false;
 	}
+
+	@Override
+	public boolean isVisited(State state) {
+		if(state!= null){
+			for(int i = 0; i<visitedStates.size(); i++){
+				JonSnowState curr = (JonSnowState)visitedStates.get(i);
+				JonSnowState lookfor = (JonSnowState)state;
+				if(curr.x == lookfor.x && curr.y == lookfor.y && curr.dragonGlass == lookfor.dragonGlass && curr.whiteWalkers == lookfor.whiteWalkers)
+					return true;
+			}
+			visitedStates.add(state);
+			return false;
+		}
+		else
+			return true;
+	}
 	
 	public static void printGrid(SaveWestros problem)
 	{
@@ -155,7 +174,7 @@ public class SaveWestros extends SearchProblem{
 		Grid grid = new Grid();
 		SaveWestros problem = new SaveWestros(grid);
 		printGrid(problem);
-		Node n = problem.searchProcedure(Strategy.BFS);
+		Node n = problem.searchProcedure(Strategy.DFS);
 		System.out.println(n);
 	}
 }

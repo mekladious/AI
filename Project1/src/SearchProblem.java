@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Queue;
 public abstract class SearchProblem {
 
 	// State[] stateSpace;
@@ -7,6 +9,7 @@ public abstract class SearchProblem {
 	int pathCost;
 	LinkedList<Node> queue;
 	int idsDepth = 0;
+	ArrayList<State> visitedStates;
 	
 	public SearchProblem(){
 		
@@ -17,7 +20,10 @@ public abstract class SearchProblem {
 		this.initialState = initialState;
 		this.operations = operations;
 		this.pathCost = -1;
+		visitedStates = new ArrayList();
 	}
+
+	public abstract boolean isVisited(State state);
 	
 	public abstract boolean isGoal(State state);
 
@@ -48,6 +54,7 @@ public abstract class SearchProblem {
 
 		//loop on the queue while it is not empty popping the first element (currentNode) and assigning its cost to current cost
 		while(!queue.isEmpty()){
+			System.out.println("here");
 			Node currentNode = queue.removeFirst();
 			pathCost = currentNode.cost; 
 			
@@ -64,7 +71,12 @@ public abstract class SearchProblem {
 					for(int i = 0; i<children.length; i++)
 					{
 						//enqueue the nodes (loop)
-						enqueueFn.enqueue(currentNode);
+						if(children[i]!=null){
+							System.out.println(((JonSnowState)children[i].state).x);
+							enqueueFn.enqueue(currentNode);
+						}
+						// System.out.println(((JonSnowState)currentNode.state).x);
+						// System.out.println(((JonSnowState)currentNode.state).y);
 					}
 				}		
 			}
@@ -77,6 +89,7 @@ public abstract class SearchProblem {
 	}
 	
 	private void dfs(Node n){
+		System.out.println("added");
 		queue.addFirst(n);
 	}
 	

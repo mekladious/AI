@@ -47,5 +47,6 @@ public class Grid {
 				break;
 			}
 		}
+		map [m-1][n-1] = CellContent.EMPTY;
     }
 }
