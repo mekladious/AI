@@ -3,6 +3,7 @@ public class SaveWestros extends SearchProblem{
 
     int m, n, dragonGlass, maxWhiteWalkers, maxObstacles;
     CellContent [][] map;
+    boolean deadJon = false;
 
 	public SaveWestros(Grid grid){
 		super(new JonSnowState(grid.m-1, grid.n-1, 0, grid.maxWhiteWalkers), JonSnowOperation.class.getEnumConstants());
@@ -31,13 +32,24 @@ public class SaveWestros extends SearchProblem{
 			if(currOperation == JonSnowOperation.KILL_WW){
 				newCost += n*m;
 			}
-			children[i] = new Node(node, currOperation, nextState(currState, currOperation), newCost+1);
+			State temp = nextState(currState, currOperation);
+			//System.out.println(temp);
+			if(this.deadJon)
+			{
+				newCost +=100;
+				this.deadJon = false;
+			}
+			//if (temp==null)
+			//	children[i] = null;
+			//else
+				children[i] = new Node(node, currOperation, temp, newCost+1);
 		}
 		return children;
 	}
 
 	public State nextState (State currState, Operation o){
 
+		//System.out.println(""+ currState+" "+ o);
 		int x = ((JonSnowState)currState).x;
 		int y = ((JonSnowState)currState).y;
 		CellContent currCell = map[x][y];
@@ -49,11 +61,11 @@ public class SaveWestros extends SearchProblem{
 		int newY = y;
 
 		if(currOperation == JonSnowOperation.LEFT){
-			newX = x + 1;
+			newX = x - 1;
 			newY = y;
 		}
 		if(currOperation == JonSnowOperation.RIGHT){
-			newX = x - 1;
+			newX = x + 1;
 			newY = y;
 		}
 		if(currOperation == JonSnowOperation.UP){
@@ -66,7 +78,7 @@ public class SaveWestros extends SearchProblem{
 		}
 		if(currOperation == JonSnowOperation.KILL_WW){ 
 			newX = x;
-			newY=y;
+			newY = y;
 			if(dg>0){
 				ww = killWW(newX, newY, ww);
 				return new JonSnowState(newX, newY, dg-1, ww);
@@ -82,18 +94,23 @@ public class SaveWestros extends SearchProblem{
 		} 
 		
 		else{
-			// int newCost;
+			//int newCost = 1;
 			switch(map[newX][newY]){
 				case WHITEWALKER:
 					// newState = new JonSnowState(newX, newY, dg, ww);
+					//john dies and no further states can be applied
+					this.deadJon = true;
+					return null;
 				case OBSTACLE:
 					return null;
 				case DRAGONSTONE:
 					return new JonSnowState(newX, newY, dragonGlass, ww);
 					//TODO: calculate cost
+					//i hv dragonstates
 					// newCost = node.cost+1;
 					// children[i] = new Node(node, (Operation)curr_operation, newState, newCost); break;
 				case EMPTY:
+					//System.out.println("here");
 					return new JonSnowState(newX, newY, dg, ww);
 					//TODO: calculate cost
 					// newCost = node.cost+1;
@@ -155,7 +172,7 @@ public class SaveWestros extends SearchProblem{
 		Grid grid = new Grid();
 		SaveWestros problem = new SaveWestros(grid);
 		printGrid(problem);
-		Node n = problem.searchProcedure(Strategy.BFS);
+		Node n = problem.searchProcedure(Strategy.IDS);
 		System.out.println(n);
 	}
 }

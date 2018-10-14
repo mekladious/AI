@@ -29,9 +29,8 @@ public abstract class SearchProblem {
 		
 		//enqueue the initial state as a node(create Node(initial state)
 		queue.add(new Node(initialState));
-		
 		//get enqueuing function based on strategy
-		EnqueueFunction enqueueFn;
+		/*EnqueueFunction enqueueFn;
 		if(strategy == Strategy.BFS)
 			enqueueFn = (n) -> bfs(n);
 		else if(strategy == Strategy.DFS)
@@ -44,10 +43,11 @@ public abstract class SearchProblem {
 			enqueueFn = (n) -> greedy(n);
 		else if(strategy == Strategy.ASTAR)	
 			enqueueFn = (n) -> aStar(n);
-		else return null;
+		else return null;*/
 
 		//loop on the queue while it is not empty popping the first element (currentNode) and assigning its cost to current cost
 		while(!queue.isEmpty()){
+
 			Node currentNode = queue.removeFirst();
 			pathCost = currentNode.cost; 
 			
@@ -60,11 +60,28 @@ public abstract class SearchProblem {
 				if((strategy == Strategy.IDS && currentNode.depth < idsDepth) || strategy != Strategy.IDS)
 				{
 					Node [] children = expand(currentNode);
-
 					for(int i = 0; i<children.length; i++)
 					{
+						
 						//enqueue the nodes (loop)
-						enqueueFn.enqueue(currentNode);
+						//enqueueFn.enqueue(currentNode);
+						if(children[i].state != null)
+						{
+							//System.out.println(i);
+							//System.out.println(children[i]);
+							if(strategy == Strategy.BFS)
+								bfs(children[i]);
+							else if(strategy == Strategy.DFS)
+								dfs(children[i]);
+							else if(strategy == Strategy.IDS)
+								ids(children[i]);
+							else if(strategy == Strategy.UCS)
+								ucs(children[i]);
+							else if(strategy == Strategy.GREEDY)
+								greedy(children[i]);
+							else if(strategy == Strategy.ASTAR)
+								aStar(children[i]);
+						}
 					}
 				}		
 			}
