@@ -54,7 +54,6 @@ public abstract class SearchProblem {
 
 		//loop on the queue while it is not empty popping the first element (currentNode) and assigning its cost to current cost
 		while(!queue.isEmpty()){
-			System.out.println("here");
 			Node currentNode = queue.removeFirst();
 			pathCost = currentNode.cost; 
 			
@@ -70,11 +69,17 @@ public abstract class SearchProblem {
 
 					for(int i = 0; i<children.length; i++)
 					{
+						/**left right up down killww */
 						//enqueue the nodes (loop)
 						if(children[i]!=null){
-							System.out.println(((JonSnowState)children[i].state).x);
-							enqueueFn.enqueue(currentNode);
+							// System.out.println("oper "+children[i].previousOperator);
+							// System.out.println("State: "+((JonSnowState)children[i].state).x);
+							// System.out.println(((JonSnowState)children[i].state).y);
+							// System.out.println(((JonSnowState)children[i].state).dragonGlass);
+							// System.out.println(((JonSnowState)children[i].state).whiteWalkers);
+							enqueueFn.enqueue(children[i]);
 						}
+							// System.out.println(children[i]);
 						// System.out.println(((JonSnowState)currentNode.state).x);
 						// System.out.println(((JonSnowState)currentNode.state).y);
 					}
@@ -89,7 +94,7 @@ public abstract class SearchProblem {
 	}
 	
 	private void dfs(Node n){
-		System.out.println("added");
+		// System.out.println("added");
 		queue.addFirst(n);
 	}
 	
