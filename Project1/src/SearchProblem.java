@@ -1,7 +1,7 @@
 import java.util.LinkedList;
 public abstract class SearchProblem {
 
-	State[] stateSpace;
+	// State[] stateSpace;
 	State initialState;
 	Operation[] operations;
 	int pathCost;
@@ -13,8 +13,7 @@ public abstract class SearchProblem {
 	}
 	
 	//add Operation[] operations,
-	public SearchProblem(State[] stateSpace, State initialState, Operation[] operations){
-		this.stateSpace = stateSpace;
+	public SearchProblem(State initialState, Operation[] operations){
 		this.initialState = initialState;
 		this.operations = operations;
 		this.pathCost = -1;
@@ -57,27 +56,18 @@ public abstract class SearchProblem {
 				return currentNode;
 			
 			//expand and get list of children nodes
-			if((strategy == Strategy.IDS && currentNode.depth < idsDepth) || strategy != Strategy.IDS)
-			{
-				Node [] children = expand(currentNode);
-
-				for(int i = 0; i<children.length; i++)
+			if(currentNode.state!=null){
+				if((strategy == Strategy.IDS && currentNode.depth < idsDepth) || strategy != Strategy.IDS)
 				{
-					//enqueue the nodes (loop)
-					enqueueFn.enqueue(currentNode);
-				}
+					Node [] children = expand(currentNode);
 
-			}	
-			//queue = expansion function from that current Node enqueing the children according to the search strategy
-			// inside: if search strategy one of the 6, go do different private enqueing searching methods
-				// switch(strategy){
-				// 	case BFS:;
-				// 	case DFS:;
-				// 	case UCS:;
-				// 	case IDS:;
-				// 	case GREEDY:;
-				// 	case ASTAR:;
-				// }
+					for(int i = 0; i<children.length; i++)
+					{
+						//enqueue the nodes (loop)
+						enqueueFn.enqueue(currentNode);
+					}
+				}		
+			}
 		}
 		return null;
 	}
