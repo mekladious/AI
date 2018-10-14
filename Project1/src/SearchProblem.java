@@ -35,7 +35,6 @@ public abstract class SearchProblem {
 		
 		//enqueue the initial state as a node(create Node(initial state)
 		queue.add(new Node(initialState));
-		
 		//get enqueuing function based on strategy
 		EnqueueFunction enqueueFn;
 		if(strategy == Strategy.BFS)
@@ -54,6 +53,7 @@ public abstract class SearchProblem {
 
 		//loop on the queue while it is not empty popping the first element (currentNode) and assigning its cost to current cost
 		while(!queue.isEmpty()){
+
 			Node currentNode = queue.removeFirst();
 			pathCost = currentNode.cost; 
 			
@@ -66,7 +66,6 @@ public abstract class SearchProblem {
 				if((strategy == Strategy.IDS && currentNode.depth < idsDepth) || strategy != Strategy.IDS)
 				{
 					Node [] children = expand(currentNode);
-
 					for(int i = 0; i<children.length; i++)
 					{
 						/**left right up down killww */

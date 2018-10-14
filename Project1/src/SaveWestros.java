@@ -3,6 +3,7 @@ public class SaveWestros extends SearchProblem{
 
     int m, n, dragonGlass, maxWhiteWalkers, maxObstacles;
     CellContent [][] map;
+    boolean deadJon = false;
 
 	public SaveWestros(Grid grid){
 		super(new JonSnowState(grid.m-1, grid.n-1, 0, grid.maxWhiteWalkers), JonSnowOperation.class.getEnumConstants());
@@ -40,6 +41,7 @@ public class SaveWestros extends SearchProblem{
 
 	public State nextState (State currState, Operation o){
 
+		//System.out.println(""+ currState+" "+ o);
 		int x = ((JonSnowState)currState).x;
 		int y = ((JonSnowState)currState).y;
 		// CellContent currCell = map[x][y];
@@ -83,7 +85,7 @@ public class SaveWestros extends SearchProblem{
 			return null;
 		} 
 		else{
-			// int newCost;
+			//int newCost = 1;
 			switch(map[newX][newY]){
 				case WHITEWALKER:
 				case OBSTACLE:
@@ -91,6 +93,7 @@ public class SaveWestros extends SearchProblem{
 				case DRAGONSTONE:
 					return new JonSnowState(newX, newY, dragonGlass, ww);
 				case EMPTY:
+					//System.out.println("here");
 					return new JonSnowState(newX, newY, dg, ww);
 				default: 
 			}
