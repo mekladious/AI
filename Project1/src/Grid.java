@@ -3,6 +3,21 @@ public class Grid {
     int m, n, dragonGlass, maxWhiteWalkers, maxObstacles;
     CellContent [][] map;
     
+    public Grid(Grid grid){
+		this.m = grid.m;
+		this.n = grid.n;
+		this.dragonGlass = grid.dragonGlass;
+		this.maxWhiteWalkers = grid.maxWhiteWalkers;
+		this.maxObstacles = grid.maxObstacles;
+		this.map = new CellContent[n][m];
+		for(int j = 0; j<grid.n; j++)		//y
+		{
+			for(int i = 0; i<grid.m; i++)	//x
+			{
+				this.map[j][i] = grid.map[j][i];
+			}
+		}
+	}
     public Grid(){
         m = /*(int)(Math.random()*20) +*/ 4;
         n = /*(int)(Math.random()*20) +*/  3;
@@ -17,14 +32,14 @@ public class Grid {
 			Arrays.fill(row, CellContent.EMPTY);
 		}
 
-		map [n-1][m-1] = CellContent.JON;
+		map [n-1][m-1] = CellContent.JON__;
 
 		for (int ww = 0; ww < maxWhiteWalkers; ww++)
 		{
 			int x = (int)(Math.random()*m);
 			int y = (int)(Math.random()*n);
 
-			if(map[y][x] == CellContent.EMPTY) map[y][x] = CellContent.WHITEWALKER;
+			if(map[y][x] == CellContent.EMPTY) map[y][x] = CellContent.WWLKR;
 			else ww--;
 		}
 		
@@ -33,7 +48,7 @@ public class Grid {
 			int x = (int)(Math.random()*m);
 			int y = (int)(Math.random()*n);
 
-			if(map[y][x] == CellContent.EMPTY) map[y][x] = CellContent.OBSTACLE;
+			if(map[y][x] == CellContent.EMPTY) map[y][x] = CellContent.OBSTC;
 			else obs--;
 		}
 
@@ -43,7 +58,7 @@ public class Grid {
 
 			if(map[y][x] == CellContent.EMPTY) 
 			{
-				map[y][x] = CellContent.DRAGONSTONE;
+				map[y][x] = CellContent.DRGNS;
 				break;
 			}
 		}

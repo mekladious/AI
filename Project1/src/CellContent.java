@@ -1,4 +1,4 @@
 
 public enum CellContent {
-	WHITEWALKER, OBSTACLE, DRAGONSTONE, EMPTY, JON; 
+	WWLKR, OBSTC, DRGNS, EMPTY, JON__; 
 }
