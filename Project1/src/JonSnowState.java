@@ -4,12 +4,14 @@ public class JonSnowState implements State{
     int y;
     int dragonGlass;             //dragon glass
     int whiteWalkers;             //white walkers
+    Grid grid;
 
-    public JonSnowState(int x, int y, int dragonGlass, int whiteWalkers) {
+    public JonSnowState(int x, int y, int dragonGlass, int whiteWalkers, Grid grid) {
         this.x = x;
         this.y = y;
         this.dragonGlass = dragonGlass;
         this.whiteWalkers = whiteWalkers;
+        this.grid = grid;
     }
     
     public int getX() {

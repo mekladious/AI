@@ -1,20 +1,19 @@
+import java.util.Stack;
 
 public class SaveWestros extends SearchProblem{
 
     int m, n, dragonGlass, maxWhiteWalkers, maxObstacles;
-    CellContent [][] map;
-    boolean deadJon = false;
-    CellContent [][] mapBackup;
+	boolean deadJon = false;
+	Grid grid;
 
 	public SaveWestros(Grid grid){
-		super(new JonSnowState(grid.m-1, grid.n-1, 0, grid.maxWhiteWalkers), JonSnowOperation.class.getEnumConstants());
+		super(new JonSnowState(grid.m-1, grid.n-1, 0, grid.maxWhiteWalkers, grid), JonSnowOperation.class.getEnumConstants());
 		m = grid.m;
 		n = grid.n;
 		dragonGlass = grid.dragonGlass;
 		maxWhiteWalkers = grid.maxWhiteWalkers;
 		maxObstacles = grid.maxObstacles;
-		map = grid.map;
-		mapBackup = map;
+		this.grid = grid;
 	}
 
 	//TODO : MIRA
@@ -32,9 +31,9 @@ public class SaveWestros extends SearchProblem{
 		
 		for(int i = 0; i<operations.length; i++){
 			JonSnowOperation currOperation = operations[i];
-			if(currOperation == JonSnowOperation.KILL_WW){
-				newCost = n*m;
-			}
+
+			newCost = currOperation==JonSnowOperation.KILL_WW ? n*m : 0;
+			// System.out.println(newCost);
 			next = nextState(currState, currOperation);
 			children[i] = (next!=null && !isVisited(next))?new Node(node, currOperation, next, newCost+node.cost+1):null;
 		}
@@ -43,12 +42,14 @@ public class SaveWestros extends SearchProblem{
 
 	public State nextState (State currState, Operation o){
 
-		//System.out.println(""+ currState+" "+ o);
 		int x = ((JonSnowState)currState).x;
 		int y = ((JonSnowState)currState).y;
-		// CellContent currCell = map[x][y];
+		
 		int ww = ((JonSnowState)currState).whiteWalkers;
 		int dg = ((JonSnowState)currState).dragonGlass;
+
+		Grid currGrid = ((JonSnowState)currState).grid;
+
 		JonSnowOperation currOperation = (JonSnowOperation)o;
 
 		int newX = x;
@@ -71,12 +72,9 @@ public class SaveWestros extends SearchProblem{
 			newY = y + 1;
 		}
 		if(currOperation == JonSnowOperation.KILL_WW){ 
-			// newX = x;
-			// newY = y;
 			if(dg>0){
-				ww = killWW(x, y, ww);
-				// System.out.println("whitewalker"+ww);
-				return new JonSnowState(x, y, dg-1, ww);
+				ww = killWW(x, y, ww, currGrid);
+				return new JonSnowState(x, y, dg-1, ww, currGrid);
 			}
 			else{
 				return null;
@@ -87,16 +85,14 @@ public class SaveWestros extends SearchProblem{
 			return null;
 		} 
 		else{
-			//int newCost = 1;
-			switch(map[newX][newY]){
+			switch(currGrid.map[newY][newX]){
 				case WWLKR:
 				case OBSTC:
 					return null;
 				case DRGNS:
-					return new JonSnowState(newX, newY, dragonGlass, ww);
+					return new JonSnowState(newX, newY, dragonGlass, ww, currGrid);
 				case EMPTY:
-					//System.out.println("here");
-					return new JonSnowState(newX, newY, dg, ww);
+					return new JonSnowState(newX, newY, dg, ww, currGrid);
 				default: 
 			}
 		}
@@ -104,25 +100,24 @@ public class SaveWestros extends SearchProblem{
 		return null;
 	}
 
-	public int killWW(int x, int y, int ww){
+	public int killWW(int x, int y, int ww, Grid grid){
 		// 				[x, y-1]	
 		//  [x-1, y]	[x,y]		[x+1, y]
 		//				[x, y+1]
-		
-		if(!((y-1)<0) && map[x][y-1]==CellContent.WWLKR){
-			map[x][y-1] = CellContent.EMPTY;
+		if(!((y-1)<0) && grid.map[y-1][x]==CellContent.WWLKR){
+			grid.map[y-1][x] = CellContent.EMPTY;
 			ww --;
 		}
-		if((y+1)<n && map[x][y+1]==CellContent.WWLKR){
-			map[x][y+1] = CellContent.EMPTY;
+		if((y+1)<n && grid.map[y+1][x]==CellContent.WWLKR){
+			grid.map[y+1][x] = CellContent.EMPTY;
 			ww --;
 		}
-		if(!((x-1)<0) && map[x-1][y]==CellContent.WWLKR){
-			map[x-1][y] = CellContent.EMPTY;
+		if(!((x-1)<0) && grid.map[y][x-1]==CellContent.WWLKR){
+			grid.map[y][x-1] = CellContent.EMPTY;
 			ww --;
 		}
-		if((x+1)<m && map[x+1][y]==CellContent.WWLKR){
-			map[x+1][y] = CellContent.EMPTY;
+		if((x+1)<m && grid.map[y][x+1]==CellContent.WWLKR){
+			grid.map[y][x+1] = CellContent.EMPTY;
 			ww --;
 		}
 		// printGrid(this);
@@ -152,19 +147,30 @@ public class SaveWestros extends SearchProblem{
 		else
 			return true;
 	}
+
+	@Override
+	public void visualizePath(Node goalNode){
+		Stack<Node> operationsStack = new Stack<Node>();
+		Node currNode = goalNode;
+
+		while(currNode!=null){
+			operationsStack.push(currNode);
+			currNode = currNode.parent;
+		}
+		while(!operationsStack.isEmpty()){
+			Node n = operationsStack.pop();
+			System.out.println(((JonSnowState)n.state).x+ "\t"+((JonSnowState)n.state).y);
+			System.out.println(n.previousOperator);
+		}
+	}
 	
-	public static void printGrid(SaveWestros problem)
+	public static void printGrid(Grid grid)
 	{
-		for(int j = 0; j<problem.m; j++)
+		for(int j = 0; j<grid.n; j++)		//y
 		{
-			// for(int j = 0; j<problem.n; j++)
-			// {
-			// 	System.out.print(i+" "+j+"\t");
-			// }
-			// System.out.println();
-			for(int i = 0; i<problem.n; i++)
+			for(int i = 0; i<grid.m; i++)	//x
 			{
-				System.out.print(problem.map[i][j]+"\t\t");
+				System.out.print(grid.map[j][i]+"\t\t");
 			}
 			System.out.println();
 		}
@@ -174,8 +180,8 @@ public class SaveWestros extends SearchProblem{
 	{
 		Grid grid = new Grid();
 		SaveWestros problem = new SaveWestros(grid);
-		printGrid(problem);
-		Node n = problem.searchProcedure(Strategy.IDS);
+		printGrid(grid);
+		Node n = problem.searchProcedure(Strategy.BFS);
 		if(n!=null)
 		{
 			System.out.println(n);
@@ -184,6 +190,8 @@ public class SaveWestros extends SearchProblem{
 		else{
 			System.out.println("No Solution!");
 		}
-//		printGrid(problem);
+		printGrid(grid);
+
+//		problem.visualizePath(n);
 	}
 }
