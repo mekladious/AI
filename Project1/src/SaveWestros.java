@@ -85,7 +85,6 @@ public class SaveWestros extends SearchProblem{
 			return null;
 		} 
 		else{
-			//int newCost = 1;
 			switch(currGrid.map[newY][newX]){
 				case WWLKR:
 				case OBSTC:
@@ -184,10 +183,17 @@ public class SaveWestros extends SearchProblem{
 		Grid grid = new Grid();
 		SaveWestros problem = new SaveWestros(grid);
 		printGrid(grid);
-
 		Node n = problem.searchProcedure(Strategy.BFS);
-		problem.visualizePath(n);
-		System.out.println(n);
+		if(n!=null)
+		{
+			System.out.println(n);
+			n.printActionSequence();
+		}
+		else{
+			System.out.println("No Solution!");
+		}
 		printGrid(grid);
+
+//		problem.visualizePath(n);
 	}
 }

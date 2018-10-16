@@ -31,7 +31,7 @@ public class Grid {
 		for (CellContent[] row : map) {
 			Arrays.fill(row, CellContent.EMPTY);
 		}
-
+		
 		map [n-1][m-1] = CellContent.JON__;
 
 		for (int ww = 0; ww < maxWhiteWalkers; ww++)
@@ -39,8 +39,10 @@ public class Grid {
 			int x = (int)(Math.random()*m);
 			int y = (int)(Math.random()*n);
 
-			if(map[y][x] == CellContent.EMPTY) map[y][x] = CellContent.WWLKR;
-			else ww--;
+			if(map[y][x] == CellContent.EMPTY) 
+				map[y][x] = CellContent.WWLKR;
+			else 
+				ww--;
 		}
 		
 		for (int obs = 0; obs < maxObstacles; obs++)
@@ -48,8 +50,10 @@ public class Grid {
 			int x = (int)(Math.random()*m);
 			int y = (int)(Math.random()*n);
 
-			if(map[y][x] == CellContent.EMPTY) map[y][x] = CellContent.OBSTC;
-			else obs--;
+			if(map[y][x] == CellContent.EMPTY) 
+				map[y][x] = CellContent.OBSTC;
+			else
+				obs--;
 		}
 
 		while(true){

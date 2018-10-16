@@ -65,7 +65,7 @@ public abstract class SearchProblem {
 			
 			//expand and get list of children nodes
 			if(currentNode.state!=null){
-				if((strategy == Strategy.IDS && currentNode.depth < idsDepth) || strategy != Strategy.IDS)
+				if((strategy == Strategy.IDS && currentNode.depth <= idsDepth) || strategy != Strategy.IDS)
 				{
 					Node [] children = expand(currentNode);
 					for(int i = 0; i<children.length; i++)
@@ -103,12 +103,12 @@ public abstract class SearchProblem {
 	{	
 		if(n.depth <= idsDepth)
 		{
-			dfs(n);
+			queue.addFirst(n);
 		}
-		else if (n.depth > idsDepth && queue.isEmpty())
+		else if ( n==null || queue.isEmpty())
 		{
 			idsDepth++;
-			ids(new Node(initialState));
+			queue.addFirst(new Node(initialState));
 		}
 	}
 	
