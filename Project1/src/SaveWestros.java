@@ -1,3 +1,4 @@
+import java.util.Stack;
 
 public class SaveWestros extends SearchProblem{
 
@@ -30,9 +31,9 @@ public class SaveWestros extends SearchProblem{
 		
 		for(int i = 0; i<operations.length; i++){
 			JonSnowOperation currOperation = operations[i];
-			if(currOperation == JonSnowOperation.KILL_WW){
-				newCost = n*m;
-			}
+
+			newCost = currOperation==JonSnowOperation.KILL_WW ? n*m : 0;
+			// System.out.println(newCost);
 			next = nextState(currState, currOperation);
 			children[i] = (next!=null && !isVisited(next))?new Node(node, currOperation, next, newCost+node.cost+1):null;
 		}
@@ -85,7 +86,7 @@ public class SaveWestros extends SearchProblem{
 		} 
 		else{
 			//int newCost = 1;
-			switch(currGrid.map[newX][newY]){
+			switch(currGrid.map[newY][newX]){
 				case WHITEWALKER:
 				case OBSTACLE:
 					return null;
@@ -105,20 +106,20 @@ public class SaveWestros extends SearchProblem{
 		//  [x-1, y]	[x,y]		[x+1, y]
 		//				[x, y+1]
 		
-		if(!((y-1)<0) && grid.map[x][y-1]==CellContent.WHITEWALKER){
-			grid.map[x][y-1] = CellContent.EMPTY;
+		if(!((y-1)<0) && grid.map[y-1][x]==CellContent.WHITEWALKER){
+			grid.map[y-1][x] = CellContent.EMPTY;
 			ww --;
 		}
-		if((y+1)<n && grid.map[x][y+1]==CellContent.WHITEWALKER){
-			grid.map[x][y+1] = CellContent.EMPTY;
+		if((y+1)<n && grid.map[y+1][x]==CellContent.WHITEWALKER){
+			grid.map[y+1][x] = CellContent.EMPTY;
 			ww --;
 		}
-		if(!((x-1)<0) && grid.map[x-1][y]==CellContent.WHITEWALKER){
-			grid.map[x-1][y] = CellContent.EMPTY;
+		if(!((x-1)<0) && grid.map[y][x-1]==CellContent.WHITEWALKER){
+			grid.map[y][x-1] = CellContent.EMPTY;
 			ww --;
 		}
-		if((x+1)<m && grid.map[x+1][y]==CellContent.WHITEWALKER){
-			grid.map[x+1][y] = CellContent.EMPTY;
+		if((x+1)<m && grid.map[y][x+1]==CellContent.WHITEWALKER){
+			grid.map[y][x+1] = CellContent.EMPTY;
 			ww --;
 		}
 		// printGrid(this);
@@ -151,16 +152,27 @@ public class SaveWestros extends SearchProblem{
 
 	@Override
 	public void visualizePath(Node goalNode){
+		Stack<Node> operationsStack = new Stack<Node>();
+		Node currNode = goalNode;
 
+		while(currNode!=null){
+			operationsStack.push(currNode);
+			currNode = currNode.parent;
+		}
+		while(!operationsStack.isEmpty()){
+			Node n = operationsStack.pop();
+			System.out.println(((JonSnowState)n.state).x+ "\t"+((JonSnowState)n.state).y);
+			System.out.println(n.previousOperator);
+		}
 	}
 	
-	public static void printGrid(SaveWestros problem)
+	public static void printGrid(Grid grid)
 	{
-		for(int i = 0; i<problem.m; i++)
+		for(int j = 0; j<grid.n; j++)		//y
 		{
-			for(int j = 0; j<problem.n; j++)
+			for(int i = 0; i<grid.m; i++)	//x
 			{
-				System.out.print(problem.grid.map[i][j]+"\t\t");
+				System.out.print(grid.map[j][i]+"\t\t");
 			}
 			System.out.println();
 		}
@@ -170,8 +182,10 @@ public class SaveWestros extends SearchProblem{
 	{
 		Grid grid = new Grid();
 		SaveWestros problem = new SaveWestros(grid);
-		printGrid(problem);
-		Node n = problem.searchProcedure(Strategy.DFS);
+		printGrid(grid);
+
+		Node n = problem.searchProcedure(Strategy.UCS);
+		problem.visualizePath(n);
 		System.out.println(n);
 	}
 }
