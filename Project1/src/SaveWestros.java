@@ -5,6 +5,7 @@ public class SaveWestros extends SearchProblem{
     int m, n, dragonGlass, maxWhiteWalkers, maxObstacles;
 	boolean deadJon = false;
 	Grid grid;
+	boolean heuristicFunctionSimle = false;
 
 	public SaveWestros(Grid grid){
 		super(new JonSnowState(grid.m-1, grid.n-1, 0, grid.maxWhiteWalkers, grid), JonSnowOperation.class.getEnumConstants());
@@ -74,7 +75,8 @@ public class SaveWestros extends SearchProblem{
 		if(currOperation == JonSnowOperation.KILL_WW){ 
 			if(dg>0){
 				Object [] ww_grid = killWW(x, y, ww, currGrid);
-				return new JonSnowState(x, y, dg-1, (int)ww_grid[0], (Grid)ww_grid[1]);
+				int numWw = (Integer) ww_grid[0];
+				return new JonSnowState(x, y, dg-1, numWw, (Grid)ww_grid[1]);
 			}
 			else{
 				return null;
@@ -151,7 +153,62 @@ public class SaveWestros extends SearchProblem{
 		else
 			return true;
 	}
+	
+	public int heuristic(Node n){
+		return heuristicFunctionSimle?heuristicSimple(n):heuristicComplex(n);
+	}
 
+
+	private int heuristicSimple(Node n){
+		int ww = (((JonSnowState)n.state).whiteWalkers%3==0)?(((JonSnowState)n.state).whiteWalkers/3):(((JonSnowState)n.state).whiteWalkers/3+1);
+		return ww * (this.n*this.m+1);
+	}
+	
+	private int heuristicComplex(Node n){
+		int ww = (((JonSnowState)n.state).whiteWalkers%3==0)?(((JonSnowState)n.state).whiteWalkers/3):(((JonSnowState)n.state).whiteWalkers/3+1);
+		if(ww == 0)
+			return 0;
+		int h = 0;
+		int myX = ((JonSnowState)n.state).x;
+		int myY = ((JonSnowState)n.state).y;
+		int dragonStoneX = ((JonSnowState)n.state).grid.dragonStoneX;
+		int dragonStoneY = ((JonSnowState)n.state).grid.dragonStoneY;
+		for(int i=0; i<ww; i++){
+			if(((JonSnowState)n.state).dragonGlass <= 0)
+			{
+				//path from my x and y to dragonglass
+				h += abs((dragonStoneX - myX)) + abs((dragonStoneY - myY));
+				//my x and y are now the same as the the dragonstone's
+				myX = dragonStoneX;
+				myY = dragonStoneY;
+			}
+			//path from variable to max white walker
+			h += max(((JonSnowState)n.state).grid, myX, myY);
+			//add killing cost
+			h += (this.n*this.m+1);
+		}
+		return h;
+	}
+	
+	private int max(Grid grid, int myX, int myY){
+		int maxPathCost = 0; 
+		for(int j = 0; j<grid.n; j++)		//y
+		{
+			for(int i = 0; i<grid.m; i++)	//x
+			{
+				if(grid.map[j][i] == CellContent.WWLKR && (i-myX+j-myY)>maxPathCost){
+					maxPathCost=(abs(i-myX)+abs(j-myY));
+				}
+			}
+		}
+		return maxPathCost;
+	}
+	
+	private int abs(int x){
+		if(x<0)
+			return -x;
+		return x;
+	}
 	@Override
 	public void visualizePath(Node goalNode){
 		Stack<Node> operationsStack = new Stack<Node>();
@@ -183,11 +240,13 @@ public class SaveWestros extends SearchProblem{
 	{
 		Grid grid = new Grid();
 		SaveWestros problem = new SaveWestros(grid);
+		problem.heuristicFunctionSimle = false;
 		printGrid(grid);
 
-		Node n = problem.searchProcedure(Strategy.BFS);
+		Node n = problem.searchProcedure(Strategy.GREEDY);
 		problem.visualizePath(n);
-		System.out.println(n);
+		if(n!=null)
+			System.out.println(n.cost);
 		printGrid(grid);
 	}
 }

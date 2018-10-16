@@ -1,6 +1,6 @@
 import java.util.Arrays;
 public class Grid {
-    int m, n, dragonGlass, maxWhiteWalkers, maxObstacles;
+    int m, n, dragonGlass, dragonStoneX, dragonStoneY, maxWhiteWalkers, maxObstacles;
     CellContent [][] map;
     
     public Grid(Grid grid){
@@ -59,6 +59,8 @@ public class Grid {
 			if(map[y][x] == CellContent.EMPTY) 
 			{
 				map[y][x] = CellContent.DRGNS;
+				dragonStoneX = x;
+				dragonStoneY = y;
 				break;
 			}
 		}
