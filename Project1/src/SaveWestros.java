@@ -4,6 +4,7 @@ public class SaveWestros extends SearchProblem{
     int m, n, dragonGlass, maxWhiteWalkers, maxObstacles;
     CellContent [][] map;
     boolean deadJon = false;
+    CellContent [][] mapBackup;
 
 	public SaveWestros(Grid grid){
 		super(new JonSnowState(grid.m-1, grid.n-1, 0, grid.maxWhiteWalkers), JonSnowOperation.class.getEnumConstants());
@@ -13,6 +14,7 @@ public class SaveWestros extends SearchProblem{
 		maxWhiteWalkers = grid.maxWhiteWalkers;
 		maxObstacles = grid.maxObstacles;
 		map = grid.map;
+		mapBackup = map;
 	}
 
 	//TODO : MIRA
@@ -87,10 +89,10 @@ public class SaveWestros extends SearchProblem{
 		else{
 			//int newCost = 1;
 			switch(map[newX][newY]){
-				case WHITEWALKER:
-				case OBSTACLE:
+				case WWLKR:
+				case OBSTC:
 					return null;
-				case DRAGONSTONE:
+				case DRGNS:
 					return new JonSnowState(newX, newY, dragonGlass, ww);
 				case EMPTY:
 					//System.out.println("here");
@@ -107,19 +109,19 @@ public class SaveWestros extends SearchProblem{
 		//  [x-1, y]	[x,y]		[x+1, y]
 		//				[x, y+1]
 		
-		if(!((y-1)<0) && map[x][y-1]==CellContent.WHITEWALKER){
+		if(!((y-1)<0) && map[x][y-1]==CellContent.WWLKR){
 			map[x][y-1] = CellContent.EMPTY;
 			ww --;
 		}
-		if((y+1)<n && map[x][y+1]==CellContent.WHITEWALKER){
+		if((y+1)<n && map[x][y+1]==CellContent.WWLKR){
 			map[x][y+1] = CellContent.EMPTY;
 			ww --;
 		}
-		if(!((x-1)<0) && map[x-1][y]==CellContent.WHITEWALKER){
+		if(!((x-1)<0) && map[x-1][y]==CellContent.WWLKR){
 			map[x-1][y] = CellContent.EMPTY;
 			ww --;
 		}
-		if((x+1)<m && map[x+1][y]==CellContent.WHITEWALKER){
+		if((x+1)<m && map[x+1][y]==CellContent.WWLKR){
 			map[x+1][y] = CellContent.EMPTY;
 			ww --;
 		}
@@ -153,14 +155,14 @@ public class SaveWestros extends SearchProblem{
 	
 	public static void printGrid(SaveWestros problem)
 	{
-		for(int i = 0; i<problem.m; i++)
+		for(int j = 0; j<problem.m; j++)
 		{
 			// for(int j = 0; j<problem.n; j++)
 			// {
 			// 	System.out.print(i+" "+j+"\t");
 			// }
 			// System.out.println();
-			for(int j = 0; j<problem.n; j++)
+			for(int i = 0; i<problem.n; i++)
 			{
 				System.out.print(problem.map[i][j]+"\t\t");
 			}
@@ -173,7 +175,15 @@ public class SaveWestros extends SearchProblem{
 		Grid grid = new Grid();
 		SaveWestros problem = new SaveWestros(grid);
 		printGrid(problem);
-		Node n = problem.searchProcedure(Strategy.DFS);
-		System.out.println(n);
+		Node n = problem.searchProcedure(Strategy.IDS);
+		if(n!=null)
+		{
+			System.out.println(n);
+			n.printActionSequence();
+		}
+		else{
+			System.out.println("No Solution!");
+		}
+//		printGrid(problem);
 	}
 }

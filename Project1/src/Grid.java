@@ -17,14 +17,14 @@ public class Grid {
 			Arrays.fill(row, CellContent.EMPTY);
 		}
 
-		map [m-1][n-1] = CellContent.JON;
+		map [m-1][n-1] = CellContent.JON__;
 
 		for (int ww = 0; ww < maxWhiteWalkers; ww++)
 		{
 			int x = (int)(Math.random()*m);
 			int y = (int)(Math.random()*n);
 
-			if(map[x][y] == CellContent.EMPTY) map[x][y] = CellContent.WHITEWALKER;
+			if(map[x][y] == CellContent.EMPTY) map[x][y] = CellContent.WWLKR;
 			else ww--;
 		}
 		
@@ -33,7 +33,7 @@ public class Grid {
 			int x = (int)(Math.random()*m);
 			int y = (int)(Math.random()*n);
 
-			if(map[x][y] == CellContent.EMPTY) map[x][y] = CellContent.OBSTACLE;
+			if(map[x][y] == CellContent.EMPTY) map[x][y] = CellContent.OBSTC;
 			else obs--;
 		}
 
@@ -43,7 +43,7 @@ public class Grid {
 
 			if(map[x][y] == CellContent.EMPTY) 
 			{
-				map[x][y] = CellContent.DRAGONSTONE;
+				map[x][y] = CellContent.DRGNS;
 				break;
 			}
 		}

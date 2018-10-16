@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class Node{
 	Node parent;
@@ -22,5 +24,32 @@ public class Node{
 		this.previousOperator = previousOperator;
 		this.state = state;
 		this.cost = cost;
+	}
+	
+	// action sequence print
+	public void printActionSequence()
+	{
+		ArrayList<Operation> actions = new ArrayList();
+		Node childNode = this;
+		
+		while(childNode!=null)
+		{
+			Node parent = childNode.parent;
+			if(parent == null)
+			{
+				break;
+			}
+			else if (childNode.previousOperator!= null)
+			{
+				actions.add(childNode.previousOperator);
+				childNode = parent;
+			}
+		}
+		
+		for(int i = actions.size()-1; i >= 0 ;i--)
+		{
+			System.out.print(actions.get(i)+",");
+		}
+		System.out.println();
 	}
 }
