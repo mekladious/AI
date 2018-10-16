@@ -28,6 +28,8 @@ public abstract class SearchProblem {
 	public abstract boolean isGoal(State state);
 
 	public abstract Node [] expand(Node node);
+
+	public abstract void visualizePath(Node goalNode);
 	
 	public Node searchProcedure(Strategy strategy){
 		//create list to represent the queue

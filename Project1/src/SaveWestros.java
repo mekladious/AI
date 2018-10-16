@@ -2,17 +2,17 @@
 public class SaveWestros extends SearchProblem{
 
     int m, n, dragonGlass, maxWhiteWalkers, maxObstacles;
-    CellContent [][] map;
-    boolean deadJon = false;
+	boolean deadJon = false;
+	Grid grid;
 
 	public SaveWestros(Grid grid){
-		super(new JonSnowState(grid.m-1, grid.n-1, 0, grid.maxWhiteWalkers), JonSnowOperation.class.getEnumConstants());
+		super(new JonSnowState(grid.m-1, grid.n-1, 0, grid.maxWhiteWalkers, grid), JonSnowOperation.class.getEnumConstants());
 		m = grid.m;
 		n = grid.n;
 		dragonGlass = grid.dragonGlass;
 		maxWhiteWalkers = grid.maxWhiteWalkers;
 		maxObstacles = grid.maxObstacles;
-		map = grid.map;
+		this.grid = grid;
 	}
 
 	//TODO : MIRA
@@ -41,12 +41,14 @@ public class SaveWestros extends SearchProblem{
 
 	public State nextState (State currState, Operation o){
 
-		//System.out.println(""+ currState+" "+ o);
 		int x = ((JonSnowState)currState).x;
 		int y = ((JonSnowState)currState).y;
-		// CellContent currCell = map[x][y];
+		
 		int ww = ((JonSnowState)currState).whiteWalkers;
 		int dg = ((JonSnowState)currState).dragonGlass;
+
+		Grid currGrid = ((JonSnowState)currState).grid;
+
 		JonSnowOperation currOperation = (JonSnowOperation)o;
 
 		int newX = x;
@@ -69,12 +71,9 @@ public class SaveWestros extends SearchProblem{
 			newY = y + 1;
 		}
 		if(currOperation == JonSnowOperation.KILL_WW){ 
-			// newX = x;
-			// newY = y;
 			if(dg>0){
-				ww = killWW(x, y, ww);
-				// System.out.println("whitewalker"+ww);
-				return new JonSnowState(x, y, dg-1, ww);
+				ww = killWW(x, y, ww, currGrid);
+				return new JonSnowState(x, y, dg-1, ww, currGrid);
 			}
 			else{
 				return null;
@@ -86,15 +85,14 @@ public class SaveWestros extends SearchProblem{
 		} 
 		else{
 			//int newCost = 1;
-			switch(map[newX][newY]){
+			switch(currGrid.map[newX][newY]){
 				case WHITEWALKER:
 				case OBSTACLE:
 					return null;
 				case DRAGONSTONE:
-					return new JonSnowState(newX, newY, dragonGlass, ww);
+					return new JonSnowState(newX, newY, dragonGlass, ww, currGrid);
 				case EMPTY:
-					//System.out.println("here");
-					return new JonSnowState(newX, newY, dg, ww);
+					return new JonSnowState(newX, newY, dg, ww, currGrid);
 				default: 
 			}
 		}
@@ -102,25 +100,25 @@ public class SaveWestros extends SearchProblem{
 		return null;
 	}
 
-	public int killWW(int x, int y, int ww){
+	public int killWW(int x, int y, int ww, Grid grid){
 		// 				[x, y-1]	
 		//  [x-1, y]	[x,y]		[x+1, y]
 		//				[x, y+1]
 		
-		if(!((y-1)<0) && map[x][y-1]==CellContent.WHITEWALKER){
-			map[x][y-1] = CellContent.EMPTY;
+		if(!((y-1)<0) && grid.map[x][y-1]==CellContent.WHITEWALKER){
+			grid.map[x][y-1] = CellContent.EMPTY;
 			ww --;
 		}
-		if((y+1)<n && map[x][y+1]==CellContent.WHITEWALKER){
-			map[x][y+1] = CellContent.EMPTY;
+		if((y+1)<n && grid.map[x][y+1]==CellContent.WHITEWALKER){
+			grid.map[x][y+1] = CellContent.EMPTY;
 			ww --;
 		}
-		if(!((x-1)<0) && map[x-1][y]==CellContent.WHITEWALKER){
-			map[x-1][y] = CellContent.EMPTY;
+		if(!((x-1)<0) && grid.map[x-1][y]==CellContent.WHITEWALKER){
+			grid.map[x-1][y] = CellContent.EMPTY;
 			ww --;
 		}
-		if((x+1)<m && map[x+1][y]==CellContent.WHITEWALKER){
-			map[x+1][y] = CellContent.EMPTY;
+		if((x+1)<m && grid.map[x+1][y]==CellContent.WHITEWALKER){
+			grid.map[x+1][y] = CellContent.EMPTY;
 			ww --;
 		}
 		// printGrid(this);
@@ -150,19 +148,19 @@ public class SaveWestros extends SearchProblem{
 		else
 			return true;
 	}
+
+	@Override
+	public void visualizePath(Node goalNode){
+
+	}
 	
 	public static void printGrid(SaveWestros problem)
 	{
 		for(int i = 0; i<problem.m; i++)
 		{
-			// for(int j = 0; j<problem.n; j++)
-			// {
-			// 	System.out.print(i+" "+j+"\t");
-			// }
-			// System.out.println();
 			for(int j = 0; j<problem.n; j++)
 			{
-				System.out.print(problem.map[i][j]+"\t\t");
+				System.out.print(problem.grid.map[i][j]+"\t\t");
 			}
 			System.out.println();
 		}
