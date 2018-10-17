@@ -173,17 +173,22 @@ public class SaveWestros extends SearchProblem{
 		int myY = ((JonSnowState)n.state).y;
 		int dragonStoneX = ((JonSnowState)n.state).grid.dragonStoneX;
 		int dragonStoneY = ((JonSnowState)n.state).grid.dragonStoneY;
+		int dragonGlass = ((JonSnowState)n.state).dragonGlass;
 		for(int i=0; i<ww; i++){
-			if(((JonSnowState)n.state).dragonGlass <= 0)
+			if(dragonGlass <= 0)
 			{
 				//path from my x and y to dragonglass
 				h += abs((dragonStoneX - myX)) + abs((dragonStoneY - myY));
 				//my x and y are now the same as the the dragonstone's
 				myX = dragonStoneX;
 				myY = dragonStoneY;
+				
+				dragonGlass+=grid.dragonGlass;
 			}
 			//path from variable to max white walker
 			h += max(((JonSnowState)n.state).grid, myX, myY);
+			//dragonGlass is less by 1
+			dragonGlass--;
 			//add killing cost
 			h += (this.n*this.m+1);
 		}
@@ -243,10 +248,19 @@ public class SaveWestros extends SearchProblem{
 		problem.heuristicFunctionSimle = false;
 		printGrid(grid);
 
-		Node n = problem.searchProcedure(Strategy.GREEDY);
+		Node n = problem.searchProcedure(Strategy.BFS);
 		problem.visualizePath(n);
 		if(n!=null)
 			System.out.println(n.cost);
 		printGrid(grid);
+		System.out.println(problem.nodesExpanded);
+		
+		Node n1 = problem.searchProcedure(Strategy.GREEDY);
+		problem.visualizePath(n1);
+		if(n1!=null)
+			System.out.println(n1.cost);
+		printGrid(grid);
+		System.out.println(problem.nodesExpanded);
+
 	}
 }

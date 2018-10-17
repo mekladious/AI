@@ -10,6 +10,7 @@ public abstract class SearchProblem {
 	LinkedList<Node> queue;
 	int idsDepth = 0;
 	ArrayList<State> visitedStates;
+	int nodesExpanded;
 	
 	public SearchProblem(){
 		
@@ -21,6 +22,7 @@ public abstract class SearchProblem {
 		this.operations = operations;
 		this.pathCost = -1;
 		visitedStates = new ArrayList();
+		nodesExpanded = 0;
 	}
 
 	public abstract boolean isVisited(State state);
@@ -34,6 +36,8 @@ public abstract class SearchProblem {
 	public abstract int heuristic(Node n);
 	
 	public Node searchProcedure(Strategy strategy){
+		//clear nodes expanded
+		nodesExpanded=0;
 		//create list to represent the queue
 		queue = new LinkedList<Node>();
 		
@@ -63,12 +67,16 @@ public abstract class SearchProblem {
 			
 			//if currentNode is goal then return currentNode
 			if(isGoal(currentNode.state))
+			{
+				nodesExpanded++;
 				return currentNode;
+			}
 			
 			//expand and get list of children nodes
 			if(currentNode.state!=null){
 //				if((strategy == Strategy.IDS && currentNode.depth <= idsDepth) || strategy != Strategy.IDS)
 //				{
+					nodesExpanded++;
 					Node [] children = expand(currentNode);
 					for(int i = 0; i<children.length; i++)
 					{
