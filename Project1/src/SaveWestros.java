@@ -5,7 +5,7 @@ public class SaveWestros extends SearchProblem{
     int m, n, dragonGlass, maxWhiteWalkers, maxObstacles;
 	boolean deadJon = false;
 	Grid grid;
-	boolean heuristicFunctionSimle = false;
+	boolean heuristicFunctionSimple = false;
 
 	public SaveWestros(Grid grid){
 		super(new JonSnowState(grid.m-1, grid.n-1, 0, grid.maxWhiteWalkers, grid), JonSnowOperation.class.getEnumConstants());
@@ -154,7 +154,7 @@ public class SaveWestros extends SearchProblem{
 	}
 	
 	public int heuristic(Node n){
-		return heuristicFunctionSimle?heuristicSimple(n):heuristicComplex(n);
+		return heuristicFunctionSimple?heuristicSimple(n):heuristicComplex(n);
 	}
 
 
@@ -245,8 +245,8 @@ public class SaveWestros extends SearchProblem{
 		Grid grid = new Grid();
 		SaveWestros problem_bfs = new SaveWestros(grid);
 		SaveWestros problem_dfs = new SaveWestros(grid);
-		problem_bfs.heuristicFunctionSimle = false;
-		problem_dfs.heuristicFunctionSimle = false;
+		problem_bfs.heuristicFunctionSimple = false;
+		problem_dfs.heuristicFunctionSimple = false;
 		printGrid(grid);
 		Node n_bfs = problem_bfs.searchProcedure(Strategy.BFS);
 		Node n_dfs = problem_dfs.searchProcedure(Strategy.DFS);
