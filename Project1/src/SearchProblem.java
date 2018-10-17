@@ -10,6 +10,7 @@ public abstract class SearchProblem {
 	LinkedList<Node> queue;
 	int idsDepth = 0;
 	ArrayList<State> visitedStates;
+	int nodesExpanded;
 	
 	public SearchProblem(){
 		
@@ -21,6 +22,7 @@ public abstract class SearchProblem {
 		this.operations = operations;
 		this.pathCost = -1;
 		visitedStates = new ArrayList();
+		nodesExpanded = 0;
 	}
 
 	public abstract boolean isVisited(State state);
@@ -31,7 +33,11 @@ public abstract class SearchProblem {
 
 	public abstract void visualizePath(Node goalNode);
 	
+	public abstract int heuristic(Node n);
+	
 	public Node searchProcedure(Strategy strategy){
+		//clear nodes expanded
+		nodesExpanded=0;
 		//create list to represent the queue
 		queue = new LinkedList<Node>();
 		
@@ -39,7 +45,7 @@ public abstract class SearchProblem {
 		queue.add(new Node(initialState));
 		//get enqueuing function based on strategy
 		EnqueueFunction enqueueFn;
-		if(strategy == Strategy.BFS)
+		/*if(strategy == Strategy.BFS)
 			enqueueFn = (n) -> bfs(n);
 		else if(strategy == Strategy.DFS)
 			enqueueFn = (n) -> dfs(n);
@@ -52,7 +58,7 @@ public abstract class SearchProblem {
 		else if(strategy == Strategy.ASTAR)	
 			enqueueFn = (n) -> aStar(n);
 		else return null;
-
+*/
 		//loop on the queue while it is not empty popping the first element (currentNode) and assigning its cost to current cost
 		while(!queue.isEmpty()){
 
@@ -61,12 +67,16 @@ public abstract class SearchProblem {
 			
 			//if currentNode is goal then return currentNode
 			if(isGoal(currentNode.state))
+			{
+				nodesExpanded++;
 				return currentNode;
+			}
 			
 			//expand and get list of children nodes
 			if(currentNode.state!=null){
 				if((strategy == Strategy.IDS && currentNode.depth <= idsDepth) || strategy != Strategy.IDS)
 				{
+					nodesExpanded++;
 					Node [] children = expand(currentNode);
 					for(int i = 0; i<children.length; i++)
 					{
@@ -78,7 +88,23 @@ public abstract class SearchProblem {
 							// System.out.println(((JonSnowState)children[i].state).y);
 							// System.out.println(((JonSnowState)children[i].state).dragonGlass);
 							// System.out.println(((JonSnowState)children[i].state).whiteWalkers);
-							enqueueFn.enqueue(children[i]);
+							if(children[i].state != null)
+							{
+								//System.out.println(i);
+								//System.out.println(children[i]);
+								if(strategy == Strategy.BFS)
+									bfs(children[i]);
+								else if(strategy == Strategy.DFS)
+									dfs(children[i]);
+								else if(strategy == Strategy.IDS)
+									ids(children[i]);
+								else if(strategy == Strategy.UCS)
+									ucs(children[i]);
+								else if(strategy == Strategy.GREEDY)
+									greedy(children[i]);
+								else if(strategy == Strategy.ASTAR)
+									aStar(children[i]);
+							}						
 						}
 							// System.out.println(children[i]);
 						// System.out.println(((JonSnowState)currentNode.state).x);
@@ -101,14 +127,21 @@ public abstract class SearchProblem {
 	
 	private void ids(Node n)
 	{	
+		System.out.println("ids " + idsDepth);
+		System.out.println("n " + n.depth+"op "+(n.previousOperator));
+
 		if(n.depth <= idsDepth)
 		{
 			queue.addFirst(n);
+			// System.out.println("node depth "+n.depth);
+			// dfs(n);
 		}
 		else if ( n==null || queue.isEmpty())
 		{
+			System.out.println("node depth start "+n.depth);
 			idsDepth++;
 			queue.addFirst(new Node(initialState));
+			// queue.add(new Node(initialState));
 		}
 	}
 	
@@ -131,9 +164,42 @@ public abstract class SearchProblem {
 	}
 	
 	private void greedy(Node n){
+		int h = heuristic(n);
+		if(queue.size()==0)
+			queue.add(n);
+		else
+		{
+			Node curr;
+			for(int i=0; i<queue.size(); i++)
+			{
+				curr = queue.get(i);
+				if(heuristic(curr)>h){
+					queue.add(i,n);
+					return;
+				}
+			}
+			queue.addLast(n);
+		}
 	}
 	
 	private void aStar(Node n){
+		int h = heuristic(n);
+		if(queue.size()==0)
+			queue.add(n);
+		else
+		{
+			Node curr;
+			for(int i=0; i<queue.size(); i++)
+			{
+				curr = queue.get(i);
+				if(heuristic(curr)+curr.cost>h+n.cost){
+					queue.add(i,n);
+					return;
+				}
+	
+			}
+			queue.addLast(n);
+		}
 	}
 
 }
