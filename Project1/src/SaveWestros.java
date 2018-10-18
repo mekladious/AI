@@ -185,7 +185,7 @@ public class SaveWestros extends SearchProblem{
 				dragonGlass+=grid.dragonGlass;
 			}
 			//path from variable to max white walker
-			h += max(((JonSnowState)n.state).grid, myX, myY);
+			h += min(((JonSnowState)n.state).grid, myX, myY);
 			//dragonGlass is less by 1
 			dragonGlass--;
 			//add killing cost
@@ -194,18 +194,18 @@ public class SaveWestros extends SearchProblem{
 		return h;
 	}
 	
-	private int max(Grid grid, int myX, int myY){
-		int maxPathCost = 0; 
+	private int min(Grid grid, int myX, int myY){
+		int minPathCost = 0; 
 		for(int j = 0; j<grid.n; j++)		//y
 		{
 			for(int i = 0; i<grid.m; i++)	//x
 			{
-				if(grid.map[j][i] == CellContent.WWLKR && (i-myX+j-myY)>maxPathCost){
-					maxPathCost=(abs(i-myX)+abs(j-myY));
+				if(grid.map[j][i] == CellContent.WWLKR && (i-myX+j-myY)<minPathCost){
+					minPathCost=(abs(i-myX)+abs(j-myY));
 				}
 			}
 		}
-		return maxPathCost;
+		return minPathCost;
 	}
 	
 	private int abs(int x){
