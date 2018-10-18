@@ -243,25 +243,25 @@ public class SaveWestros extends SearchProblem{
 	public static void main(String[] args)
 	{
 		Grid grid = new Grid();
+		SaveWestros problem_ids = new SaveWestros(grid);
 		SaveWestros problem_bfs = new SaveWestros(grid);
-		SaveWestros problem_dfs = new SaveWestros(grid);
+		problem_ids.heuristicFunctionSimple = false;
 		problem_bfs.heuristicFunctionSimple = false;
-		problem_dfs.heuristicFunctionSimple = false;
 		printGrid(grid);
+		Node n_ids = problem_ids.searchProcedure(Strategy.IDS);
 		Node n_bfs = problem_bfs.searchProcedure(Strategy.BFS);
-		Node n_dfs = problem_dfs.searchProcedure(Strategy.DFS);
-		if(n_bfs!=null)
+		if(n_ids!=null)
 		{
-			System.out.println(n_bfs);
-			n_bfs.printActionSequence();
+			System.out.println(n_ids);
+			n_ids.printActionSequence();
 		}
 		else{
 			System.out.println("No Solution!");
 		}
-		if(n_dfs!=null)
+		if(n_bfs!=null)
 		{
-			System.out.println(n_dfs);
-			n_dfs.printActionSequence();
+			System.out.println(n_bfs);
+			n_bfs.printActionSequence();
 		}
 		else{
 			System.out.println("No Solution!");

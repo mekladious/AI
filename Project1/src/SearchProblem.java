@@ -8,7 +8,8 @@ public abstract class SearchProblem {
 	Operation[] operations;
 	int pathCost;
 	LinkedList<Node> queue;
-	int idsDepth = 0;
+	int idsDepth;
+	int depthLimit;
 	ArrayList<State> visitedStates;
 	int nodesExpanded;
 	
@@ -23,6 +24,8 @@ public abstract class SearchProblem {
 		this.pathCost = -1;
 		visitedStates = new ArrayList();
 		nodesExpanded = 0;
+		this.idsDepth = 0;
+		this.depthLimit = 100;
 	}
 
 	public abstract boolean isVisited(State state);
@@ -71,7 +74,6 @@ public abstract class SearchProblem {
 				nodesExpanded++;
 				return currentNode;
 			}
-			
 			//expand and get list of children nodes
 			if(currentNode.state!=null){
 				if((strategy == Strategy.IDS && currentNode.depth <= idsDepth) || strategy != Strategy.IDS)
@@ -81,13 +83,7 @@ public abstract class SearchProblem {
 					for(int i = 0; i<children.length; i++)
 					{
 						/**left right up down killww */
-						//enqueue the nodes (loop)
 						if(children[i]!=null){
-							// System.out.println("oper "+children[i].previousOperator);
-							// System.out.println("State: "+((JonSnowState)children[i].state).x);
-							// System.out.println(((JonSnowState)children[i].state).y);
-							// System.out.println(((JonSnowState)children[i].state).dragonGlass);
-							// System.out.println(((JonSnowState)children[i].state).whiteWalkers);
 							if(children[i].state != null)
 							{
 								//System.out.println(i);
@@ -106,12 +102,14 @@ public abstract class SearchProblem {
 									aStar(children[i]);
 							}						
 						}
-							// System.out.println(children[i]);
-						// System.out.println(((JonSnowState)currentNode.state).x);
-						// System.out.println(((JonSnowState)currentNode.state).y);
 					}
 				}		
 			}
+		}
+		if(strategy == Strategy.IDS && idsDepth<depthLimit){
+			idsDepth++;
+			visitedStates = new ArrayList();
+			return searchProcedure(Strategy.IDS);
 		}
 		return null;
 	}
@@ -121,28 +119,34 @@ public abstract class SearchProblem {
 	}
 	
 	private void dfs(Node n){
-		// System.out.println("added");
 		queue.addFirst(n);
 	}
 	
 	private void ids(Node n)
 	{	
-		System.out.println("ids " + idsDepth);
-		System.out.println("n " + n.depth+"op "+(n.previousOperator));
+		// System.out.println("ids " + idsDepth);
+		// System.out.println("n " + n.depth+"op "+(n.previousOperator));
 
 		if(n.depth <= idsDepth)
 		{
 			queue.addFirst(n);
 			// System.out.println("node depth "+n.depth);
 			// dfs(n);
-		}
-		else if ( n==null || queue.isEmpty())
-		{
-			System.out.println("node depth start "+n.depth);
-			idsDepth++;
-			queue.addFirst(new Node(initialState));
-			// queue.add(new Node(initialState));
-		}
+		} 
+		// else{
+		// 	if ( n==null || queue.isEmpty()){
+		// 		System.out.println("node depth start "+n.depth);
+		// 		// idsDepth++;
+		// 		// queue.addFirst(new Node(initialState));
+		// 		// queue.add(new Node(initialState));
+		// 	}else{
+
+		// 	}
+		// }
+	}
+
+	private void dls(Node n){
+
 	}
 	
 	private void ucs(Node n){
