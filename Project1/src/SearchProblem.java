@@ -40,7 +40,7 @@ public abstract class SearchProblem {
 	
 	public Node searchProcedure(Strategy strategy){
 		//clear nodes expanded
-		nodesExpanded=0;
+		// nodesExpanded=0;
 		//create list to represent the queue
 		queue = new LinkedList<Node>();
 		

@@ -19,8 +19,10 @@ public class Grid {
 		}
 	}
     public Grid(){
-        m = /*(int)(Math.random()*20) +*/ 10;
-        n = /*(int)(Math.random()*20) +*/  10;
+		m=10;
+		n=10;
+        // m = (int)(Math.random()*20) + 4;
+        // n = (int)(Math.random()*20) + 4;
 
 		maxWhiteWalkers = (int)(Math.random() * (0.3*m*n)) + 1;
 		maxObstacles = (int)(Math.random() *(0.3*m*n))+1;

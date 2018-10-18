@@ -262,43 +262,57 @@ public class SaveWestros extends SearchProblem{
 		
 		System.out.println("BFS solution:");
 		Node bfsNode = problem_bfs.searchProcedure(Strategy.BFS);
-		if(bfsNode!=null)
-			bfsNode.printActionSequence();
+		System.out.println(problem_bfs.nodesExpanded);
+		// System.out.println(bfsNode.co);
+		if(bfsNode!=null){
+			System.out.println(bfsNode.cost);
+			bfsNode.printActionSequence();}
 		else
 			System.out.println("No Solution!");
+		
 
 		System.out.println("DFS solution:");
 		Node dfsNode = problem_dfs.searchProcedure(Strategy.DFS);
-		if(dfsNode!=null)
-			dfsNode.printActionSequence();
+		System.out.println(problem_dfs.nodesExpanded);
+		if(dfsNode!=null){
+		System.out.println(dfsNode.cost);
+			dfsNode.printActionSequence();}
 		else
 			System.out.println("No Solution!");
 
 		System.out.println("IDS solution:");
 		Node idsNode = problem_ids.searchProcedure(Strategy.IDS);
-		if(idsNode!=null)
-			idsNode.printActionSequence();
+		System.out.println(problem_ids.nodesExpanded);
+		if(idsNode!=null){
+			System.out.println(idsNode.cost);
+			idsNode.printActionSequence();}
 		else
 			System.out.println("No Solution!");
 		
 		System.out.println("UCS solution:");
 		Node ucsNode = problem_ucs.searchProcedure(Strategy.UCS);
-		if(ucsNode!=null)
-			ucsNode.printActionSequence();
+		System.out.println(problem_ucs.nodesExpanded);
+		if(ucsNode!=null){
+			System.out.println(ucsNode.cost);
+			ucsNode.printActionSequence();}
 		else
 			System.out.println("No Solution!");
 
 		System.out.println("GREEDY solution:");	
 		Node greedyNode = problem_greedy.searchProcedure(Strategy.GREEDY);
-		if(greedyNode!=null)
-			greedyNode.printActionSequence();
+		System.out.println(problem_greedy.nodesExpanded);
+		if(greedyNode!=null){
+			System.out.println(greedyNode.cost);
+			greedyNode.printActionSequence();}
 		else
 			System.out.println("No Solution!");
 
 		System.out.println("ASTAR solution:");
 		Node astarNode = problem_astar.searchProcedure(Strategy.ASTAR);
-		if(astarNode!=null)
-			astarNode.printActionSequence();
+		System.out.println(problem_astar.nodesExpanded);
+		if(astarNode!=null){	
+			System.out.println(astarNode.cost);
+			astarNode.printActionSequence();}
 		else
 			System.out.println("No Solution!");
 
