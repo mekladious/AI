@@ -243,31 +243,64 @@ public class SaveWestros extends SearchProblem{
 	public static void main(String[] args)
 	{
 		Grid grid = new Grid();
-		SaveWestros problem_ids = new SaveWestros(grid);
-		SaveWestros problem_bfs = new SaveWestros(grid);
-		problem_ids.heuristicFunctionSimple = false;
-		problem_bfs.heuristicFunctionSimple = false;
-		printGrid(grid);
-		Node n_ids = problem_ids.searchProcedure(Strategy.IDS);
-		Node n_bfs = problem_bfs.searchProcedure(Strategy.BFS);
-		if(n_ids!=null)
-		{
-			System.out.println(n_ids);
-			n_ids.printActionSequence();
-		}
-		else{
-			System.out.println("No Solution!");
-		}
-		if(n_bfs!=null)
-		{
-			System.out.println(n_bfs);
-			n_bfs.printActionSequence();
-		}
-		else{
-			System.out.println("No Solution!");
-		}
 		printGrid(grid);
 
-//		problem.visualizePath(n);
+		SaveWestros problem_bfs = new SaveWestros(grid);
+		SaveWestros problem_dfs = new SaveWestros(grid);
+		SaveWestros problem_ids = new SaveWestros(grid);
+		SaveWestros problem_ucs = new SaveWestros(grid);
+		SaveWestros problem_greedy = new SaveWestros(grid);
+		SaveWestros problem_astar = new SaveWestros(grid);
+
+		problem_bfs.heuristicFunctionSimple = false;
+		problem_dfs.heuristicFunctionSimple = false;
+		problem_ids.heuristicFunctionSimple = false;
+		problem_ucs.heuristicFunctionSimple = false;
+		problem_greedy.heuristicFunctionSimple = false;
+		problem_astar.heuristicFunctionSimple = false;
+
+		Node bfsNode = problem_bfs.searchProcedure(Strategy.BFS);
+		Node dfsNode = problem_dfs.searchProcedure(Strategy.DFS);
+		Node idsNode = problem_ids.searchProcedure(Strategy.IDS);
+		Node ucsNode = problem_ucs.searchProcedure(Strategy.UCS);
+		Node greedyNode = problem_greedy.searchProcedure(Strategy.GREEDY);
+		Node astarNode = problem_astar.searchProcedure(Strategy.ASTAR);
+		
+		System.out.println("BFS solution:");
+		if(bfsNode!=null)
+			bfsNode.printActionSequence();
+		else
+			System.out.println("No Solution!");
+
+		System.out.println("DFS solution:");
+		if(dfsNode!=null)
+			dfsNode.printActionSequence();
+		else
+			System.out.println("No Solution!");
+
+		System.out.println("IDS solution:");
+		if(idsNode!=null)
+			idsNode.printActionSequence();
+		else
+			System.out.println("No Solution!");
+		
+		System.out.println("UCS solution:");
+		if(ucsNode!=null)
+			ucsNode.printActionSequence();
+		else
+			System.out.println("No Solution!");
+
+		System.out.println("GREEDY solution:");	
+		if(greedyNode!=null)
+			greedyNode.printActionSequence();
+		else
+			System.out.println("No Solution!");
+
+		System.out.println("ASTAR solution:");
+		if(astarNode!=null)
+			astarNode.printActionSequence();
+		else
+			System.out.println("No Solution!");
+
 	}
 }

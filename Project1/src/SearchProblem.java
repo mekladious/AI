@@ -86,8 +86,6 @@ public abstract class SearchProblem {
 						if(children[i]!=null){
 							if(children[i].state != null)
 							{
-								//System.out.println(i);
-								//System.out.println(children[i]);
 								if(strategy == Strategy.BFS)
 									bfs(children[i]);
 								else if(strategy == Strategy.DFS)
@@ -124,29 +122,10 @@ public abstract class SearchProblem {
 	
 	private void ids(Node n)
 	{	
-		// System.out.println("ids " + idsDepth);
-		// System.out.println("n " + n.depth+"op "+(n.previousOperator));
-
 		if(n.depth <= idsDepth)
 		{
 			queue.addFirst(n);
-			// System.out.println("node depth "+n.depth);
-			// dfs(n);
 		} 
-		// else{
-		// 	if ( n==null || queue.isEmpty()){
-		// 		System.out.println("node depth start "+n.depth);
-		// 		// idsDepth++;
-		// 		// queue.addFirst(new Node(initialState));
-		// 		// queue.add(new Node(initialState));
-		// 	}else{
-
-		// 	}
-		// }
-	}
-
-	private void dls(Node n){
-
 	}
 	
 	private void ucs(Node n){
