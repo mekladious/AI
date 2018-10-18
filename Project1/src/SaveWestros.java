@@ -259,44 +259,44 @@ public class SaveWestros extends SearchProblem{
 		problem_greedy.heuristicFunctionSimple = false;
 		problem_astar.heuristicFunctionSimple = false;
 
-		Node bfsNode = problem_bfs.searchProcedure(Strategy.BFS);
-		Node dfsNode = problem_dfs.searchProcedure(Strategy.DFS);
-		Node idsNode = problem_ids.searchProcedure(Strategy.IDS);
-		Node ucsNode = problem_ucs.searchProcedure(Strategy.UCS);
-		Node greedyNode = problem_greedy.searchProcedure(Strategy.GREEDY);
-		Node astarNode = problem_astar.searchProcedure(Strategy.ASTAR);
 		
 		System.out.println("BFS solution:");
+		Node bfsNode = problem_bfs.searchProcedure(Strategy.BFS);
 		if(bfsNode!=null)
 			bfsNode.printActionSequence();
 		else
 			System.out.println("No Solution!");
 
 		System.out.println("DFS solution:");
+		Node dfsNode = problem_dfs.searchProcedure(Strategy.DFS);
 		if(dfsNode!=null)
 			dfsNode.printActionSequence();
 		else
 			System.out.println("No Solution!");
 
 		System.out.println("IDS solution:");
+		Node idsNode = problem_ids.searchProcedure(Strategy.IDS);
 		if(idsNode!=null)
 			idsNode.printActionSequence();
 		else
 			System.out.println("No Solution!");
 		
 		System.out.println("UCS solution:");
+		Node ucsNode = problem_ucs.searchProcedure(Strategy.UCS);
 		if(ucsNode!=null)
 			ucsNode.printActionSequence();
 		else
 			System.out.println("No Solution!");
 
 		System.out.println("GREEDY solution:");	
+		Node greedyNode = problem_greedy.searchProcedure(Strategy.GREEDY);
 		if(greedyNode!=null)
 			greedyNode.printActionSequence();
 		else
 			System.out.println("No Solution!");
 
 		System.out.println("ASTAR solution:");
+		Node astarNode = problem_astar.searchProcedure(Strategy.ASTAR);
 		if(astarNode!=null)
 			astarNode.printActionSequence();
 		else
