@@ -1,7 +1,10 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 public class Grid {
     int m, n, dragonGlass, dragonStoneX, dragonStoneY, maxWhiteWalkers, maxObstacles;
-    CellContent [][] map;
+	CellContent [][] map;
     
     public Grid(Grid grid){
 		this.m = grid.m;
@@ -19,10 +22,15 @@ public class Grid {
 		}
 	}
     public Grid(){
-		m=10;
-		n=10;
-        // m = (int)(Math.random()*20) + 4;
-        // n = (int)(Math.random()*20) + 4;
+		// m=10;
+		// n=10;
+		String JonSnowSentence;
+		ArrayList<String> ObstaclesSentences = new ArrayList<String>();
+		ArrayList<String> WhiteWalkersSentences = new ArrayList<String>();
+		String DragonStoneSentence;
+
+        m = (int)(Math.random()*20) + 3;
+        n = (int)(Math.random()*20) + 3;
 
 		maxWhiteWalkers = (int)(Math.random() * (0.3*m*n)) + 1;
 		maxObstacles = (int)(Math.random() *(0.3*m*n))+1;
@@ -41,8 +49,10 @@ public class Grid {
 			int x = (int)(Math.random()*m);
 			int y = (int)(Math.random()*n);
 
-			if(map[y][x] == CellContent.EMPTY) 
+			if(map[y][x] == CellContent.EMPTY){
 				map[y][x] = CellContent.WWLKR;
+				WhiteWalkersSentences.add("WWLKR("+x+","+y+")");
+			}
 			else 
 				ww--;
 		}
@@ -52,8 +62,10 @@ public class Grid {
 			int x = (int)(Math.random()*m);
 			int y = (int)(Math.random()*n);
 
-			if(map[y][x] == CellContent.EMPTY) 
+			if(map[y][x] == CellContent.EMPTY) {
 				map[y][x] = CellContent.OBSTC;
+				ObstaclesSentences.add("OBSTC("+x+","+y+")");
+			}
 			else
 				obs--;
 		}
@@ -67,9 +79,33 @@ public class Grid {
 				map[y][x] = CellContent.DRGNS;
 				dragonStoneX = x;
 				dragonStoneY = y;
+				DragonStoneSentence = "DRGNS("+x+","+y+")";
 				break;
 			}
 		}
 		map [n-1][m-1] = CellContent.EMPTY;
-    }
+		JonSnowSentence = "JON("+(n-1)+","+(m-1)+","+dragonGlass+")";
+		WriteLogicalSentences(JonSnowSentence, ObstaclesSentences, WhiteWalkersSentences, DragonStoneSentence);
+	}
+	
+	public void WriteLogicalSentences(String j, ArrayList<String> o, ArrayList<String> w, String d){
+		try{
+			PrintWriter writer = new PrintWriter("../../genfiles/grid.pl", "UTF-8");
+			writer.println(j);
+			for (String obs : o) { 		      
+				writer.println(obs);
+			}
+			for (String ww : w) { 		      
+				writer.println(ww);
+			}	      
+			writer.println(d);
+			writer.close();
+		} catch(Exception e){
+			System.err.println(e);
+		} 
+		
+	}
+	public static void main(String[] args) {
+		Grid grid = new Grid();
+	}
 }

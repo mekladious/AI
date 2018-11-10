@@ -1,0 +1,15 @@
+• A brief description of your understanding of the problem.
+
+• A description of the modified implementation of GenGrid.
+
+• A discussion of the syntax and semantics of the action terms and predicate symbols you employ.
+
+• A discussion of your implementation of the successor-state axioms.
+
+• A description of the query used to generate the plan.
+
+• At least two running examples from your implementation.
+
+• If your program does not run, your report should include a discussion of what you think the problem is and any suggestions you might have for solving it.
+
+• Proper citation of any sources you might have consulted in the course of com- pleting the project. Under no condition, you may use on-line code as part of your implementation.
