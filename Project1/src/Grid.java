@@ -91,7 +91,7 @@ public class Grid {
 	
 	public void WriteLogicalSentences(String j, ArrayList<String> o, ArrayList<String> w, String d){
 		try{
-			PrintWriter writer = new PrintWriter("../../genfiles/grid.pl", "UTF-8");
+			PrintWriter writer = new PrintWriter("../../Project2/genfiles/grid.pl", "UTF-8");
 			// writer.println("% format: predicate(x, y, additionalInfoOptional, situationOptional)");
 			writer.println(g+'.'); writer.println();
 			writer.println(j+'.'); writer.println();
