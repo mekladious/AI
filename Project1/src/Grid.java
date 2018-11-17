@@ -51,7 +51,7 @@ public class Grid {
 
 			if(map[y][x] == CellContent.EMPTY){
 				map[y][x] = CellContent.WWLKR;
-				WhiteWalkersSentences.add("WWLKR("+x+","+y+")");
+				WhiteWalkersSentences.add("wwlkr("+x+","+y+",s0)");
 			}
 			else 
 				ww--;
@@ -64,7 +64,7 @@ public class Grid {
 
 			if(map[y][x] == CellContent.EMPTY) {
 				map[y][x] = CellContent.OBSTC;
-				ObstaclesSentences.add("OBSTC("+x+","+y+")");
+				ObstaclesSentences.add("obstc("+x+","+y+")");
 			}
 			else
 				obs--;
@@ -79,26 +79,32 @@ public class Grid {
 				map[y][x] = CellContent.DRGNS;
 				dragonStoneX = x;
 				dragonStoneY = y;
-				DragonStoneSentence = "DRGNS("+x+","+y+")";
+				DragonStoneSentence = "drgns("+x+","+y+","+dragonGlass+")";
 				break;
 			}
 		}
 		map [n-1][m-1] = CellContent.EMPTY;
-		JonSnowSentence = "JON("+(n-1)+","+(m-1)+","+dragonGlass+")";
-		WriteLogicalSentences(JonSnowSentence, ObstaclesSentences, WhiteWalkersSentences, DragonStoneSentence);
+		JonSnowSentence = "jon("+(n-1)+","+(m-1)+","+dragonGlass+",s0)";
+		GridSentence = "grid("+m+","+n+")";
+		WriteLogicalSentences(GridSentence ,JonSnowSentence, ObstaclesSentences, WhiteWalkersSentences, DragonStoneSentence);
 	}
 	
 	public void WriteLogicalSentences(String j, ArrayList<String> o, ArrayList<String> w, String d){
 		try{
 			PrintWriter writer = new PrintWriter("../../genfiles/grid.pl", "UTF-8");
-			writer.println(j);
+			// writer.println("% format: predicate(x, y, additionalInfoOptional, situationOptional)");
+			writer.println(g+'.'); writer.println();
+			writer.println(j+'.'); writer.println();
+			writer.println("ww_count("+maxWhiteWalkers+","+"s0)"+'.'); writer.println();
 			for (String obs : o) { 		      
-				writer.println(obs);
+				writer.println(obs+'.');
 			}
+			writer.println();
 			for (String ww : w) { 		      
-				writer.println(ww);
-			}	      
-			writer.println(d);
+				writer.println(ww+'.');
+			}
+			writer.println();	      
+			writer.println(d+'.');
 			writer.close();
 		} catch(Exception e){
 			System.err.println(e);
