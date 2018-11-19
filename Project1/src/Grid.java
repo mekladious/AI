@@ -97,7 +97,7 @@ public class Grid {
 			// writer.println("% format: predicate(x, y, additionalInfoOptional, situationOptional)");
 			writer.println(g+'.'); writer.println();
 			writer.println(j+'.'); writer.println();
-			writer.println("ww_count("+maxWhiteWalkers+","+"s0)"+'.'); writer.println();
+			//writer.println("ww_count("+maxWhiteWalkers+","+"s0)"+'.'); writer.println();
 			for (String obs : o) { 		      
 				writer.println(obs+'.');
 			}

@@ -2,8 +2,6 @@ grid(20,8).
 
 jon(7,19,113,s0).
 
-ww_count(31,s0).
-
 obstc(13,2).
 obstc(18,5).
 obstc(9,6).
